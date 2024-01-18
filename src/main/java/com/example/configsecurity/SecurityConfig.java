@@ -34,22 +34,12 @@ public class SecurityConfig {
 
     private UserDaitlsServiceImpl userDaitlsServiceImpl;
 
-//    private final UserDetailsService userDetailsService;
-//
-//    private final JWTAuthFilter authFilter;
-//@Autowired
-//    public SecurityConfig(@Lazy UserDetailsService userDetailsService, JWTAuthFilter authFilter) {
-//    this.userDetailsService = userDetailsService;
-//    this.authFilter = authFilter;
-//}
+
     @Bean
     public JdbcUserDetailsManager jdbcUserDetailsManager(DataSource dataSource){
         return new JdbcUserDetailsManager(dataSource);
     }
 
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(jdbcUserDetailsManager()).passwordEncoder(passwordEncoder);
-//    }
 
     @Bean
     public InMemoryUserDetailsManager inMemoryUserDetailsManager(){
@@ -60,35 +50,16 @@ return  new InMemoryUserDetailsManager(
 @Bean
     public SecurityFilterChain securityFilterChain(@NotNull HttpSecurity httpSecurity) throws Exception {
     httpSecurity.formLogin(formLogin -> {formLogin.defaultSuccessUrl("/admin");});
-//    httpSecurity.rememberMe( -> {});
 
     httpSecurity.authorizeHttpRequests(authorizeHttpRequests->{authorizeHttpRequests.requestMatchers("/admin/**").hasAuthority("admin");});
+    httpSecurity.authorizeHttpRequests(authorizeHttpRequests->{authorizeHttpRequests.requestMatchers("/user/**").hasAuthority("user");});
+
     httpSecurity.authorizeHttpRequests(authorizeHttpRequests->{authorizeHttpRequests.anyRequest().authenticated();});
-//    httpSecurity.exceptionHandling(ex -> {ex.accessDeniedPage("no authority");});
     httpSecurity.userDetailsService(userDaitlsServiceImpl);
     return httpSecurity.build();
     }
 
 
-    // Password Encoding
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//
-//        return new BCryptPasswordEncoder();
-//    }
-//
-//    @Bean
-//    public AuthenticationProvider authenticationProvider() {
-//        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-//        authenticationProvider.setUserDetailsService(userDetailsService);
-//        authenticationProvider.setPasswordEncoder(passwordEncoder());
-//        return authenticationProvider;
-//    }
-//
-//    @Bean
-//    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-//        return config.getAuthenticationManager();
-//    }
 
 
 }

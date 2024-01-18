@@ -19,8 +19,7 @@ public class UserEntity {
     private  String username;
     private String password;
     private String email;
-//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private UserProfil userProfile;
+
 
     @ManyToMany(fetch = FetchType.EAGER)
 
